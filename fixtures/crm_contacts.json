@@ -1,0 +1,32 @@
+{
+  "note": "Fictional contacts already in the fake CRM before the run. Not real people.",
+  "contacts": [
+    {
+      "email": "dana.whitlock@northpine.example",
+      "first_name": "Dana",
+      "last_name": "Whitlock",
+      "company": "Northpine Logistics (fictional)",
+      "company_domain": "northpine.example",
+      "work_email": "dana.whitlock@northpine.example",
+      "industry": "logistics",
+      "employee_count": 300,
+      "hq_country": "US",
+      "tech_stack": ["zoho"],
+      "owner_id": "9002",
+      "lead_status": "open"
+    },
+    {
+      "email": "omar.reyes@kestrelworks.example",
+      "first_name": "Omar",
+      "last_name": "Reyes",
+      "company": "Kestrelworks Health (fictional)",
+      "company_domain": "kestrelworks.example",
+      "work_email": "omar.reyes@kestrelworks.example",
+      "industry": "healthcare_tech",
+      "employee_count": 2200,
+      "hq_country": "AU",
+      "owner_id": "9005",
+      "lead_status": "open"
+    }
+  ]
+}
