@@ -1,0 +1,43 @@
+{
+  "note": "Three fictional enrichment providers. cost_per_match is in credits, charged only when the provider returns a value.",
+  "providers": {
+    "alpha": {
+      "cost_per_match": 1,
+      "data": {
+        "brightharbor.example": {"employee_count": 800, "industry": "software", "hq_country": "US"},
+        "tidewatercoffee.example": {"people": {"sam rivera": "sam@tidewater-mail.example"},
+                                    "employee_count": 12, "industry": "hospitality"},
+        "quillstone.example": {"industry": "fintech"},
+        "pebblebrook.example": {"employee_count": 60, "industry": "retail", "hq_country": "US"},
+        "ironvale.example": {"employee_count": 0},
+        "larkfield.example": {"employee_count": 400, "industry": "software", "hq_country": "CA"},
+        "northpine.example": {"employee_count": 310, "industry": "logistics", "hq_country": "US"},
+        "kestrelworks.example": {"employee_count": 2000, "industry": "healthcare_tech"},
+        "luckyspin.example": {"employee_count": 90, "industry": "gambling", "hq_country": "US"}
+      }
+    },
+    "beta": {
+      "cost_per_match": 2,
+      "data": {
+        "brightharbor.example": {"employee_count": 790, "tech_stack": ["hubspot", "salesforce"]},
+        "tidewatercoffee.example": {"people": {"sam rivera": "sam.rivera@tidewatercoffee.example"},
+                                    "hq_country": "US", "tech_stack": ["hubspot"]},
+        "quillstone.example": {"employee_count": 1200, "hq_country": "GB"},
+        "ironvale.example": {"employee_count": 150, "industry": "manufacturing"},
+        "larkfield.example": {"tech_stack": ["hubspot"]},
+        "northpine.example": {"tech_stack": ["zoho"]},
+        "luckyspin.example": {"tech_stack": ["salesforce"]}
+      }
+    },
+    "gamma": {
+      "cost_per_match": 5,
+      "data": {
+        "brightharbor.example": {"employee_count": 805, "hq_country": "US",
+                                 "tech_stack": ["hubspot"]},
+        "quillstone.example": {"employee_count": 1250, "tech_stack": ["salesforce"]},
+        "ironvale.example": {"hq_country": "DE", "tech_stack": ["pipedrive"]},
+        "kestrelworks.example": {"hq_country": "AU", "tech_stack": ["salesforce"]}
+      }
+    }
+  }
+}
