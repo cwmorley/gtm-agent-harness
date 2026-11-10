@@ -1,0 +1,79 @@
+{
+  "rules_version": "2026.11.1",
+  "free_mail_domains": ["freemail.example", "gmail.com", "yahoo.com", "outlook.com", "hotmail.com"],
+  "disqualifiers": [
+    {"id": "no_company_domain", "field": "company_domain", "op": "is_empty"},
+    {"id": "blocked_domain", "field": "company_domain", "op": "in",
+     "value": ["rival-agency.example", "internal-test.example"]},
+    {"id": "disqualified_industry", "field": "industry", "op": "in",
+     "value": ["gambling", "adult", "student_project"]}
+  ],
+  "fit_criteria": [
+    {"id": "employee_count_in_range", "field": "employee_count", "op": "between",
+     "value": [50, 5000], "weight": 25},
+    {"id": "target_industry", "field": "industry", "op": "in",
+     "value": ["software", "fintech", "logistics", "healthcare_tech", "manufacturing"], "weight": 20},
+    {"id": "uses_target_crm", "field": "tech_stack", "op": "contains_any",
+     "value": ["hubspot", "salesforce"], "weight": 15},
+    {"id": "business_email", "field": "business_email", "op": "is_true", "weight": 10}
+  ],
+  "intent_criteria": [
+    {"id": "urgency_high", "field": "urgency", "op": "equals", "value": "high", "weight": 15},
+    {"id": "use_case_we_serve", "field": "use_case", "op": "in",
+     "value": ["lead_routing", "crm_migration", "data_enrichment", "reporting", "ai_agents"],
+     "weight": 10},
+    {"id": "competitor_mentioned", "field": "competitor", "op": "not_empty", "weight": 5}
+  ],
+  "grade_thresholds": {"A": 75, "B": 50, "C": 25, "D": 0},
+  "grade_policies": {
+    "A": {"actions": ["route_to_ae", "create_task"], "owner_role": "AE",
+          "sla_minutes": 5, "lead_status": "new"},
+    "B": {"actions": ["route_to_sdr"], "owner_role": "SDR",
+          "sla_minutes": 60, "lead_status": "new"},
+    "C": {"actions": ["nurture"], "owner_role": null,
+          "sla_minutes": 1440, "lead_status": "nurture"},
+    "D": {"actions": ["status_only"], "owner_role": null,
+          "sla_minutes": null, "lead_status": "unqualified"},
+    "DISQUALIFIED": {"actions": ["status_only"], "owner_role": null,
+                     "sla_minutes": null, "lead_status": "unqualified"}
+  },
+  "territories": {
+    "NA": ["US", "CA"],
+    "EMEA": ["GB", "DE", "FR", "NL"],
+    "APAC": ["AU", "SG"]
+  },
+  "default_territory": "NA",
+  "roster": [
+    {"owner_id": "9001", "name": "Riley Okafor (fictional)", "role": "AE", "territory": "NA"},
+    {"owner_id": "9002", "name": "Marta Lindqvist (fictional)", "role": "SDR", "territory": "NA"},
+    {"owner_id": "9003", "name": "Tobias Brandt (fictional)", "role": "AE", "territory": "EMEA"},
+    {"owner_id": "9004", "name": "Aisha Rahman (fictional)", "role": "SDR", "territory": "EMEA"},
+    {"owner_id": "9005", "name": "Kenji Watanabe (fictional)", "role": "AE", "territory": "APAC"},
+    {"owner_id": "9006", "name": "Priya Nair (fictional)", "role": "SDR", "territory": "APAC"}
+  ],
+  "enrichment": {
+    "fields": {
+      "work_email": {"providers": ["alpha", "beta", "gamma"], "validation": "email_matches_domain"},
+      "employee_count": {"providers": ["alpha", "beta", "gamma"], "validation": "positive_integer"},
+      "industry": {"providers": ["alpha", "beta"], "validation": "non_empty_string"},
+      "hq_country": {"providers": ["alpha", "beta", "gamma"], "validation": "country_code"},
+      "tech_stack": {"providers": ["beta", "gamma"], "validation": "non_empty_list"}
+    }
+  },
+  "crm": {
+    "overwritable_properties": [
+      "employee_count", "tech_stack", "lead_status", "lead_grade", "lead_score",
+      "intent_use_case", "intent_urgency", "intent_summary", "competitor_mentioned",
+      "rules_version", "sla_minutes", "owner_id"
+    ],
+    "required_properties": {
+      "route_to_ae": ["email", "company", "lead_status", "lead_grade", "lead_score",
+                      "owner_id", "rules_version"],
+      "route_to_sdr": ["email", "company", "lead_status", "lead_grade", "lead_score",
+                       "owner_id", "rules_version"],
+      "nurture": ["email", "lead_status", "lead_grade", "lead_score", "rules_version"],
+      "status_only": ["email", "lead_status"]
+    },
+    "status_only_properties": ["email", "lead_status"]
+  }
+}
