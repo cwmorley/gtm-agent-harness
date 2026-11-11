@@ -30,6 +30,8 @@ def criterion_met(criterion: dict, facts: dict) -> bool:
         return value == criterion["value"]
     if op == "in":
         return value in criterion["value"]
+    if op == "domain_in":
+        return any(value == domain or value.endswith("." + domain) for domain in criterion["value"])
     if op == "between":
         low, high = criterion["value"]
         return low <= value <= high

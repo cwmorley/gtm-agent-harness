@@ -1,6 +1,6 @@
 # Routing rules, in plain language
 
-Source of truth: `routing_rules.json` (this folder). Current `rules_version`: **2026.11.1**.
+Source of truth: `routing_rules.json` (this folder). Current `rules_version`: **2026.11.2**.
 All names, companies and owner IDs are fictional.
 
 The harness reads these rules; it does not contain them. If a rule here and the JSON disagree,
@@ -22,7 +22,8 @@ the JSON wins and this file has a bug.
 ## Disqualifiers (checked before any money is spent, and again after enrichment)
 
 1. `no_company_domain`: free-mail address and no website. We cannot tell who the company is.
-2. `blocked_domain`: the domain is on the block list (rival agencies, internal tests).
+2. `blocked_domain`: the domain is on the block list (rival agencies, internal tests), or is a
+   subdomain of a listed domain.
 3. `disqualified_industry`: gambling, adult, student project.
 
 A disqualified lead is not enriched, not sent to the model, not scored. Grade: `DISQUALIFIED`.

@@ -6,6 +6,7 @@ addresses, because flags are copied into the audit log.
 
 import re
 
+from harness.audit import EMAIL_SHAPE
 from harness.enrichment import field_value_is_valid
 from harness.model import INTENT_FIELDS, URGENCIES, USE_CASES
 from harness.normalise import normalise_whitespace
@@ -66,6 +67,8 @@ def check_competitor_grounding(intent: dict, form_text: str) -> list:
     competitor = intent["competitor"]["value"]
     if competitor is None:
         return []
+    if EMAIL_SHAPE.search(competitor):
+        return [flag("competitor_grounding", "competitor value looks like an email address")]
     pattern = rf"\b{re.escape(competitor)}\b"
     if re.search(pattern, form_text, re.IGNORECASE):
         return []

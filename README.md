@@ -35,7 +35,7 @@ Rules (`rules/routing_rules.json`, explained in `rules/RULES.md`) set grade, own
 ## Run it (Python 3.10+, no dependencies)
 
 ```
-python -m unittest discover -s tests -v                              # 143 tests, no network
+python -m unittest discover -s tests -v                              # 149 tests, no network
 python -m harness run fixtures/leads.jsonl fixtures/resubmission.jsonl
 python -m harness explain L-006                                      # full audit trail, one lead
 python -m harness coverage fixtures/leads.jsonl                      # enrichment coverage, cost
@@ -131,8 +131,10 @@ Not verified:
 - **Synthetic data.** Leads, contacts, providers, hit rates and costs are invented. Idempotency
   keys and the CRM live in memory, so replay protection covers one process run.
 - **Known limit.** A model that mislabels urgency or use case while quoting real text passes the
-  grounding checks. It can add at most the 30 intent points (one test shows a C becoming a B);
-  it cannot name a grade or an owner.
+  grounding checks. It can add at most the 30 intent points, which is enough to
+  cross two grade boundaries: a fit score of 45 to 49 is a C, and with full intent points it
+  becomes an A (a test pins this). It cannot name a grade or an owner. Whether intent should be
+  allowed to lift a lead more than one grade is a rules decision; today the rules allow it.
 
 ## Governance
 
