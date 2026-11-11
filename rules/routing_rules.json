@@ -1,9 +1,9 @@
 {
-  "rules_version": "2026.11.1",
+  "rules_version": "2026.11.2",
   "free_mail_domains": ["freemail.example", "gmail.com", "yahoo.com", "outlook.com", "hotmail.com"],
   "disqualifiers": [
     {"id": "no_company_domain", "field": "company_domain", "op": "is_empty"},
-    {"id": "blocked_domain", "field": "company_domain", "op": "in",
+    {"id": "blocked_domain", "field": "company_domain", "op": "domain_in",
      "value": ["rival-agency.example", "internal-test.example"]},
     {"id": "disqualified_industry", "field": "industry", "op": "in",
      "value": ["gambling", "adult", "student_project"]}

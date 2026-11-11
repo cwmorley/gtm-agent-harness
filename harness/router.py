@@ -24,6 +24,21 @@ STEPS = ("dedupe", "qualify", "enrich", "interpret", "score", "decide", "validat
 COMPANY_FIELDS = ("employee_count", "industry", "hq_country", "tech_stack")
 
 
+def read_employee_count(raw):
+    """A whole number, or None so the field is treated as missing and enriched.
+
+    Web forms send numbers as strings and sometimes as ranges ("50-200"). A value that is
+    not a plain whole number is not guessed at.
+    """
+    if isinstance(raw, bool):
+        return None
+    if isinstance(raw, int):
+        return raw
+    if isinstance(raw, str) and raw.strip().isdigit():
+        return int(raw.strip())
+    return None
+
+
 def read_form(payload: dict, rules: dict) -> dict:
     """Normalise the raw form payload into the field names the rest of the harness uses."""
     email = normalise_email(payload["email"])
@@ -40,7 +55,7 @@ def read_form(payload: dict, rules: dict) -> dict:
         "company_domain": company_domain,
         "business_email": business_email,
         "work_email": email if business_email else "",
-        "employee_count": payload.get("employee_count"),
+        "employee_count": read_employee_count(payload.get("employee_count")),
         "industry": normalise_label(payload.get("industry", "")),
         "hq_country": payload.get("country", "").strip().upper(),
         "tech_stack": [],
@@ -58,7 +73,7 @@ def merge_known(form: dict, found: dict, rules: dict) -> dict:
     overwritable = rules["crm"]["overwritable_properties"]
     crm = found["properties"]
     known = dict(form)
-    reusable = list(COMPANY_FIELDS)
+    reusable = list(COMPANY_FIELDS) + ["company"]
     if found["match"] == "email":
         reusable.append("work_email")
     for field in reusable:
@@ -185,7 +200,10 @@ def step_enrich(state: dict, rules: dict, registry) -> None:
         step="enrich")
     for field, outcome in result["fields"].items():
         if outcome["validation_passed"]:
-            known[field] = outcome["value"]
+            value = outcome["value"]
+            if field == "industry" and isinstance(value, str):
+                value = normalise_label(value)
+            known[field] = value
             state["enriched_fields"].append(field)
     state["enrichment_result"] = result
     note_step(state, "enrich", "ran", f"fields: {needed}")
